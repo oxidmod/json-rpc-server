@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Oxidmod\JsonRpcServer\Response;
@@ -13,7 +14,8 @@ class Response implements ResponseInterface
         private string|int|null $id,
         private mixed $result,
         private ?array $error
-    ) {}
+    ) {
+    }
 
     public static function success(string|int $id, mixed $result): self
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Oxidmod\JsonRpcServer\Request;
@@ -8,8 +9,8 @@ use Oxidmod\JsonRpcServer\ServerError;
 # TODO: add notification support
 class Request
 {
-    public readonly int|string $id;
-    
+    public readonly int | string $id;
+
     public readonly string $method;
 
     public readonly array $params;
@@ -53,7 +54,7 @@ class Request
     private function extractRequestId(array $request): int|string|null
     {
         $id = $request['id'] ?? null;
-        return match(true) {
+        return match (true) {
             is_null($id) || is_int($id) || is_string($id) => $id,
             default => null,
         };

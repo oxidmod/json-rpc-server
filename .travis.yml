@@ -1,0 +1,16 @@
+os: [linux]
+dist: bionic
+
+language: php
+php: [8.1.0]
+
+before_script:
+  - composer install
+  - mkdir -p ./.build/phpunit
+
+script:
+  - XDEBUG_MODE=coverage composer run-script coverage
+  - composer run-script check-style
+
+after_script:
+  - composer run-script coveralls

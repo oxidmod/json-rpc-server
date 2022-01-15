@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Oxidmod\JsonRpcServer;
 
+// phpcs:ignoreFile
 enum ServerError: int
 {
     case parseError = -32700;

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Oxidmod\Tests\JsonRpcServer\Response;
@@ -91,7 +92,11 @@ class ResponseTest extends TestCase
             ServerError::invalidParamsError,
             42,
             null,
-            $this->prepareErrorResponse(42, ServerError::invalidParamsError, ServerError::invalidParamsError->description()),
+            $this->prepareErrorResponse(
+                42,
+                ServerError::invalidParamsError,
+                ServerError::invalidParamsError->description()
+            ),
         ];
 
         yield 'internal server error' => [

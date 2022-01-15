@@ -1,0 +1,5 @@
+service_name: travis-pro
+repo_token: qI7DzqKToEvW9fufVcUYcwDyRGFp0OPMM
+
+coverage_clover: ./.build/phpunit/clover.xml
+json_path: ./.build/phpunit/coveralls-upload.json

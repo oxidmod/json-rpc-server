@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Oxidmod\Tests\JsonRpcServer;
@@ -86,8 +87,18 @@ class ServerTest extends TestCase
                 $this->createParserMock($content, $batchRequest),
                 [
                     $this->createRequestHandlerMock('not_to_be_called'),
-                    $this->createRequestHandlerMock($request->method, [['request' => $request, 'response' => $response]]),
-                    $this->createRequestHandlerMock($request2->method, [['request' => $request2, 'response' => $response2]]),
+                    $this->createRequestHandlerMock(
+                        $request->method,
+                        [
+                            ['request' => $request, 'response' => $response],
+                        ]
+                    ),
+                    $this->createRequestHandlerMock(
+                        $request2->method,
+                        [
+                            ['request' => $request2, 'response' => $response2],
+                        ]
+                    ),
                 ]
             ),
             $content,

@@ -1,0 +1,20 @@
+build:
+  environment:
+    php: 8.1.1
+    apt_packages:
+      - openssl
+  nodes:
+    analysis:
+      tests:
+        override:
+          - php-scrutinizer-run
+
+checks:
+  php: true
+
+tools:
+  php_cpd: false
+
+filter:
+  excluded_paths:
+    - tests/*

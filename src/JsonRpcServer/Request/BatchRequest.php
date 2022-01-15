@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Oxidmod\JsonRpcServer\Request;
@@ -9,7 +10,8 @@ class BatchRequest
 {
     public function __construct(
         private array $data
-    ) {}
+    ) {
+    }
 
     public function requests(): Generator
     {

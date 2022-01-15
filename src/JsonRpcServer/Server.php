@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Oxidmod\JsonRpcServer;
@@ -19,6 +20,7 @@ class Server
         private Parser $parser,
         iterable $handlers
     ) {
+        /** @var RequestHandlerInterface $handler */
         foreach ($handlers as $handler) {
             $this->handlers[$handler->getSupportedMethod()] = $handler;
         }

@@ -10,6 +10,7 @@ use Oxidmod\JsonRpcServer\Request\Parser;
 use Oxidmod\JsonRpcServer\Request\Request;
 use Oxidmod\JsonRpcServer\Response\BatchResponse;
 use Oxidmod\JsonRpcServer\Response\Response;
+use Throwable;
 
 class Server
 {
@@ -51,10 +52,14 @@ class Server
     {
         $handler = $this->handlers[$request->method] ?? null;
 
-        return match (true) {
-            $handler instanceof RequestHandlerInterface => $handler->handle($request),
-            default => Response::error(ServerError::methodNotFoundError, $request->id),
-        };
+        try {
+            return match (true) {
+                $handler instanceof RequestHandlerInterface => $handler->handle($request),
+                default => Response::error(ServerError::methodNotFoundError, $request->id),
+            };
+        } catch (Throwable $e) {
+            return Response::error(ServerError::internalError, $request->id, [['error' => $e->getMessage()]]);
+        }
     }
 
     private function handleBatchRequest(BatchRequest $batch): ResponseInterface

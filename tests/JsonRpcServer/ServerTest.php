@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oxidmod\Tests\JsonRpcServer;
 
+use Exception;
 use Oxidmod\JsonRpcServer\Request\BatchRequest;
 use Oxidmod\JsonRpcServer\Request\InvalidRequestException;
 use Oxidmod\JsonRpcServer\Request\Parser;
@@ -125,6 +126,7 @@ class ServerTest extends TestCase
                 yield $request;
                 yield $requestException;
             })());
+
         yield 'invalid request in batch' => [
             new Server(
                 $this->createParserMock($content, $batchRequest),
@@ -152,6 +154,23 @@ class ServerTest extends TestCase
             $content,
             (new BatchResponse())
                 ->addResponse(Response::error(ServerError::requestError)),
+        ];
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())
+            ->method('getSupportedMethod')
+            ->willReturn($request->method);
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willThrowException(new Exception('Test exception', 777));
+        yield 'handler throws Throwable' => [
+            new Server(
+                $this->createParserMock($content, $request),
+                [$handler],
+            ),
+            $content,
+            Response::error(ServerError::internalError, $request->id, [['error' => 'Test exception']]),
         ];
     }
 

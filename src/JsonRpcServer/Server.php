@@ -31,11 +31,11 @@ class Server
     {
         try {
             $item = $this->parser->parseRawContent($content);
-        } catch (InvalidRequestException $exception) {
+        } catch (Throwable $exception) {
             $item = $exception;
+        } finally {
+            return $this->process($item);
         }
-
-        return $this->process($item);
     }
 
     private function process(mixed $item): ResponseInterface

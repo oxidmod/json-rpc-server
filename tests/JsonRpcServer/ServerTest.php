@@ -15,6 +15,7 @@ use Oxidmod\JsonRpcServer\Response\Response;
 use Oxidmod\JsonRpcServer\ResponseInterface;
 use Oxidmod\JsonRpcServer\Server;
 use Oxidmod\JsonRpcServer\ServerError;
+use Throwable;
 
 class ServerTest extends TestCase
 {
@@ -66,7 +67,6 @@ class ServerTest extends TestCase
             $response
         ];
 
-
         $request2Method = 'request_2_method';
         $request2Id = 13;
         $request2 = $this->createRequest([
@@ -117,6 +117,15 @@ class ServerTest extends TestCase
             ),
             $content,
             $errorResponse,
+        ];
+
+        yield 'parser throws unexpected Throwable' => [
+            new Server(
+                $this->createParserMock($content, new Exception('Test')),
+                []
+            ),
+            $content,
+            Response::error(ServerError::requestError),
         ];
 
         $batchRequest = $this->createMock(BatchRequest::class);
@@ -174,12 +183,12 @@ class ServerTest extends TestCase
         ];
     }
 
-    private function createParserMock(string $content, Request|BatchRequest|InvalidRequestException $result): Parser
+    private function createParserMock(string $content, Request|BatchRequest|Throwable $result): Parser
     {
         $mock = $this->createMock(Parser::class);
         $invocation = $mock->expects($this->once())->method('parseRawContent')->with($content);
 
-        if ($result instanceof InvalidRequestException) {
+        if ($result instanceof Throwable) {
             $invocation->willThrowException($result);
         } else {
             $invocation->willReturn($result);

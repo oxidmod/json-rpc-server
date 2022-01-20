@@ -33,9 +33,9 @@ class Server
             $item = $this->parser->parseRawContent($content);
         } catch (Throwable $exception) {
             $item = $exception;
-        } finally {
-            return $this->process($item);
         }
+
+        return $this->process($item);
     }
 
     private function process(mixed $item): ResponseInterface
